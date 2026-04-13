@@ -4,7 +4,7 @@ metadata:
   name: banking-api
   namespace: banking
 spec:
-  replicas: 2
+  replicas: 3
   selector:
     matchLabels:
       app: banking-api
@@ -13,20 +13,27 @@ spec:
       labels:
         app: banking-api
     spec:
+      nodeSelector:
+        type: high-memory
+
       topologySpreadConstraints:
       - maxSkew: 1
-        topologyKey: "kubernetes.io/hostname"
-        whenUnsatisfiable: ScheduleAnyway
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
         labelSelector:
           matchLabels:
             app: banking-api
+
       affinity:
         podAntiAffinity:
-          requiredDuringSchedulingIgnoredDuringExecution:
-          - labelSelector:
-              matchLabels:
-                app: postgres-db
-            topologyKey: "kubernetes.io/hostname"
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchLabels:
+                  app: postgres-db
+              topologyKey: kubernetes.io/hostname
+
       containers:
       - name: banking-api
         image: habibamohamedmegahed/banking-api:v1.0

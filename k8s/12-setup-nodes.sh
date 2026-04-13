@@ -1,7 +1,7 @@
 #!/bin/bash
-NODE=$(kubectl get nodes --no-headers | grep -v control-plane | head -1 | awk '{print $1}')
-echo "Labeling and tainting node: $NODE"
-kubectl label node $NODE type=high-memory --overwrite
-kubectl taint nodes $NODE database-only=true:NoSchedule --overwrite
+# Label and taint minikube-m02 for database
+kubectl label node minikube-m02 type=high-memory --overwrite
+kubectl taint nodes minikube-m02 database-only=true:NoSchedule --overwrite
+
 echo "Done!"
-kubectl get nodes --show-labels | grep high-memory
+kubectl get nodes --show-labels
