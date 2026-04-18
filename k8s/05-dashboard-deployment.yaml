@@ -44,4 +44,4 @@ spec:
             cpu: "200m"
 
         # ✅ Restart behavior (optional تحسين)
-        imagePullPolicy: IfNotPresent
+        imagePullPolicy: Never

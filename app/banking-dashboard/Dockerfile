@@ -3,10 +3,14 @@ FROM nginx:1.25-alpine
 # Remove default nginx config
 RUN rm /etc/nginx/conf.d/default.conf
 
-# Copy your custom config
+# Copy your custom nginx config
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 
-# Copy website files
-COPY index.html /usr/share/nginx/html/
+# Copy all frontend files (مش بس index.html)
+COPY . /usr/share/nginx/html/
 
+# Expose port
 EXPOSE 80
+
+# Start nginx
+CMD ["nginx", "-g", "daemon off;"]
